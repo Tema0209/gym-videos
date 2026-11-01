@@ -1,0 +1,9 @@
+{
+  "name": "Gym Videos Offline",
+  "short_name": "Gym Videos",
+  "start_url": "./offline.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111b25",
+  "theme_color": "#111b25"
+}

@@ -1,17 +1,171 @@
-<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111b25"><link rel="manifest" href="./manifest.webmanifest"><title>Gym Videos offline</title><style>body{font-family:system-ui,Arial,sans-serif;background:#111b25;color:#fff;max-width:620px;margin:auto;padding:22px}h1{margin-bottom:8px}p,small{color:#b8cad3;line-height:1.5}button{width:100%;background:#078fc0;border:0;padding:16px;color:white;border-radius:12px;font-size:17px;font-weight:bold}button:disabled{opacity:.6}progress{width:100%;margin:14px 0}a{display:flex;justify-content:space-between;background:#25394a;color:white;margin:8px 0;padding:14px;border-radius:10px;text-decoration:none}a span{color:#70d5ff}.panel{border:1px solid #375064;border-radius:16px;padding:16px;margin:20px 0}#status{min-height:46px;padding-top:10px;font-size:14px}</style></head><body><h1>🏋️ Gym Videos</h1><p>Ladda ner alla videor hemma på Wi-Fi. Då fungerar dina övningssidor utan internet.</p><div class="panel"><button id="save">Ladda ner allt offline</button><progress id="bar" max="36" value="0" hidden></progress><div id="status">Kontrollerar...</div><small>Cirka 76 MB videofiler. Använd Safari på iPhone. Vissa videor kan kräva en stund att laddas ner.</small></div><h2>Övningar</h2><a href="./index.html">Shoulder Press <span>›</span></a>
-<a href="./cable-lateral-raises.html">Cable Lateral Raises <span>›</span></a>
-<a href="./cable-triceps-pushdown.html">Cable Triceps Pushdown <span>›</span></a>
-<a href="./calf-raise.html">Calf Raise <span>›</span></a>
-<a href="./chest-press-maskin-or-db-bench-press.html">Chest Press / DB Bench Press <span>›</span></a>
-<a href="./chest-press-maskin.html">Chest Press Machine <span>›</span></a>
-<a href="./dumbbell-bench-press.html">Dumbbell Bench Press <span>›</span></a>
-<a href="./dumbbell-shrugs.html">Dumbbell Shrugs <span>›</span></a>
-<a href="./hammer-curl.html">Hammer Curl <span>›</span></a>
-<a href="./incline-dumbbell-press.html">Incline Dumbbell Press (saknad MP4) <span>›</span></a>
-<a href="./lat-pulldown.html">Lat Pulldown <span>›</span></a>
-<a href="./leg-extension.html">Leg Extension <span>›</span></a>
-<a href="./one-arm-cable-row.html">One-Arm Cable Row <span>›</span></a>
-<a href="./overhead-cable-triceps-extension.html">Overhead Cable Triceps Extension <span>›</span></a>
-<a href="./pec-deck.html">Pec Deck <span>›</span></a>
-<a href="./reverse-pec-deck.html">Reverse Pec Deck <span>›</span></a>
-<a href="./seated-incline-db-curl.html">Seated Incline DB Curl <span>›</span></a><p><small>Tips: För att använda som hemskärmsapp, lägg först till den från Safari och öppna sedan hemskärmsappen och tryck ”Ladda ner allt offline” där. Den har separat cache.</small></p><script>const FILES = ["index.html", "cable-lateral-raises.html", "cable-triceps-pushdown.html", "calf-raise.html", "chest-press-maskin-or-db-bench-press.html", "chest-press-maskin.html", "dumbbell-bench-press.html", "dumbbell-shrugs.html", "hammer-curl.html", "incline-dumbbell-press.html", "lat-pulldown.html", "leg-extension.html", "one-arm-cable-row.html", "overhead-cable-triceps-extension.html", "pec-deck.html", "reverse-pec-deck.html", "seated-incline-db-curl.html", "Cable Lateral Raises.mp4", "Cable Triceps Pushdown.mp4", "Calf Raise.mp4", "Dumbbell Bench Press.mp4", "Dumbbell Shrugs.mp4", "Lat Pulldown.mp4", "Leg Extension.mp4", "One-Arm Cable Row.mp4", "Overhead Cable Triceps Extension.mp4", "Reverse Pec Deck.mp4", "chest press maskin.mp4", "chest press maskin_or_db bench press.mp4", "pec deck.mp4", "seated incline db curl.mp4", "ssstik.io_1791313489374.mp4", "ssstik.io_@1saaclifts_1791314725300.mp4", "offline.html", "sw.js", "manifest.webmanifest"];const VERSION="gym-offline-v1";const btn=document.querySelector('#save'),bar=document.querySelector('#bar'),status=document.querySelector('#status');async function count(){const c=await caches.open(VERSION);let n=0;for(const file of FILES){if(await c.match(new URL(file,location.href).href,{ignoreVary:true}))n++}return n}async function start(){if(!('serviceWorker' in navigator)||!('caches' in window)){status.textContent='Webbläsaren stöder inte offlinefunktionen';btn.disabled=true;return}try{await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;const n=await count();status.textContent=n===FILES.length?'✓ Allt sparat. Testa flygplansläge!':n+' av '+FILES.length+' filer sparade.'}catch(e){status.textContent='Fel: '+e.message;btn.disabled=true}}btn.onclick=async()=>{btn.disabled=true;bar.hidden=false;let done=0;try{await navigator.serviceWorker.ready;let c=await caches.open(VERSION);for(const file of FILES){status.textContent='Sparar '+(done+1)+'/'+FILES.length+': '+file;const url=new URL(file,location.href).href;const response=await fetch(new Request(url,{cache:'reload'}));if(!response.ok||response.status!==200)throw Error(file+' HTTP '+response.status);await c.put(url,response);bar.value=++done}status.textContent='✓ Klart! Testa med flygplansläge.'}catch(e){status.textContent='Avbrutet vid '+(done+1)+': '+e.message+'. Tryck igen för att försöka igen.'}finally{btn.disabled=false}};start();</script></body></html>
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1720">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gym Videos">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>Gym Videos · Träningsschema</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1720;--surface:#182b38;--surface2:#213847;--border:#324f5c;--primary:#15a6cb;--text:#eef7fc;--muted:#a2bdca;--green:#82dfb2}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;min-height:100vh}
+main{max-width:720px;margin:0 auto;padding:21px 17px calc(50px + env(safe-area-inset-bottom))}
+.site-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.site-head h1{font-size:24px;letter-spacing:-.6px;margin:3px 0 0;font-weight:800}
+.site-head .eyebrow{color:var(--primary)}
+.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:1.5px;font-weight:750;color:#93dcef}
+.head-icon{height:45px;width:45px;border-radius:13px;background:#183e4d;display:grid;place-items:center;font-size:23px;flex-shrink:0}
+.day-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 20px}
+.day-tab{border:1px solid var(--border);background:#152934;border-radius:13px;color:var(--muted);padding:12px 4px 10px;cursor:pointer;font-size:15px;font-weight:750;min-height:65px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;touch-action:manipulation}
+.day-tab small{font-size:11px;font-weight:550;color:#88a3b3}
+.day-tab[aria-pressed="true"]{background:#126e86;border-color:#1fc1e5;color:#fff;box-shadow:0 0 0 1px #1fc1e533 inset}
+.day-tab[aria-pressed="true"] small{color:#d0f3fc}
+.day-tab:focus-visible,summary:focus-visible,#save:focus-visible{outline:3px solid #81e0f8;outline-offset:3px}
+.split-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.split-heading h2{font-size:27px;letter-spacing:-.7px;line-height:1.2;margin:4px 0 6px}
+.split-heading p{color:var(--muted);font-size:13px;margin:0}
+.split-icon{font-size:26px}
+.day-panel[hidden]{display:none}
+.exercise-list{display:grid;gap:9px}
+.exercise{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:13px;min-width:0;overflow:hidden}
+.exercise.has-video{display:block}
+.exercise summary{display:flex;align-items:center;cursor:pointer;list-style:none;min-height:77px;padding:13px 13px 13px 12px;gap:13px;touch-action:manipulation}
+.exercise summary::-webkit-details-marker{display:none}
+.exercise.no-video{gap:13px;min-height:77px;padding:13px 13px 13px 12px}
+.order{font-size:12px;flex:0 0 33px;height:33px;border-radius:10px;display:grid;place-items:center;background:var(--surface2);color:#9edbec;font-weight:800;font-variant-numeric:tabular-nums}
+.ex-main{flex:1;min-width:0}
+.ex-main strong{display:block;font-size:15px;font-weight:700;line-height:1.3;margin-bottom:5px}
+.details{color:var(--muted);font-size:11.5px;line-height:1.6;display:block}
+.sets{color:#d2f5ff;font-weight:700;white-space:nowrap}
+.rest{white-space:nowrap}.mid-dot{color:#617f91;margin:0 6px}
+.end-mark{background:#07526a;color:#8be8ff;border-radius:9px;height:31px;min-width:31px;font-size:12px;display:grid;place-items:center;flex-shrink:0}
+.exercise[open]{background:var(--surface2);border-color:#1b9bc0}
+.exercise[open] .end-mark{background:#0a7696;transform:rotate(90deg)}
+.unavailable{font-size:10px;color:#91a4ae;line-height:1.3;text-align:right;flex:0 0 46px}
+.clip{padding:0 12px 13px}
+.clip video{display:block;width:100%;max-height:430px;aspect-ratio:9/13;object-fit:contain;background:#080d11;border-radius:9px}
+.video-hint{font-size:11px;color:#a8c0ca;margin:9px 0 0}
+.offline-panel{border:1px solid var(--border);border-radius:14px;background:#132531;padding:13px 14px;margin:0 0 23px}
+.offline-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.offline-title{font-size:14px;font-weight:800;display:flex;align-items:center;gap:7px}
+.offline-title .dot{width:8px;height:8px;background:#ffbe68;border-radius:50%;display:inline-block}
+.offline-panel[data-ready="true"] .dot{background:var(--green)}
+#status{font-size:12px;color:var(--muted);margin:5px 0 0;overflow-wrap:anywhere;min-height:16px}
+#save{background:#087fa2;color:white;border:0;border-radius:10px;font-size:13px;font-weight:800;padding:10px 13px;cursor:pointer;flex-shrink:0}
+#save:disabled{opacity:.6;cursor:progress}
+progress{width:100%;height:8px;accent-color:var(--primary);margin:3px 0 0}
+#progress[hidden]{display:none}
+.footer-note{font-size:12px;line-height:1.6;color:#879fad;margin:16px 2px}
+@media(max-width:370px){main{padding-left:11px;padding-right:11px}.details{font-size:10px}.exercise summary,.exercise.no-video{gap:8px}.split-heading h2{font-size:23px}}
+@media(min-width:660px){main{padding:34px 22px 60px}.day-tab{min-height:72px}.exercise summary,.exercise.no-video{min-height:85px}}
+</style>
+</head>
+<body>
+<main>
+<header class="site-head"><div><span class="eyebrow">4 dagars träningsschema</span><h1>Gym Videos</h1></div><div class="head-icon" aria-hidden="true">🏋️</div></header>
+<nav class="day-tabs" aria-label="Välj träningsdag">
+<button type="button" class="day-tab" data-target="mon" aria-pressed="false"><span>Mån</span><small>6 övn.</small></button>
+<button type="button" class="day-tab" data-target="tue" aria-pressed="false"><span>Tis</span><small>5 övn.</small></button>
+<button type="button" class="day-tab" data-target="wed" aria-pressed="false"><span>Ons</span><small>5 övn.</small></button>
+<button type="button" class="day-tab" data-target="thu" aria-pressed="false"><span>Tor</span><small>5 övn.</small></button>
+</nav>
+<section class="offline-panel" id="offline-panel" aria-label="Offline-nedladdning">
+  <div class="offline-row">
+    <div class="offline-title"><span class="dot"></span><span>Offlinevideor</span></div>
+    <button id="save" type="button">Ladda ner allt</button>
+  </div>
+  <progress id="progress" max="36" value="0" hidden></progress>
+  <p id="status" role="status" aria-live="polite">Kontrollerar lokala filer…</p>
+</section>
+<section class="day-panel" id="mon" aria-labelledby="heading-mon"><div class="split-heading"><div><span class="eyebrow">Måndag · 6 övningar</span><h2 id="heading-mon">Shoulders + Arms</h2><p>Axlar · Biceps · Triceps</p></div><span class="split-icon" aria-hidden="true">💪</span></div><div class="exercise-list"><div class="exercise no-video"><span class="order">01</span><span class="ex-main"><strong>Dumbbell Shoulder Press</strong><span class="details">Front delts<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><details class="exercise has-video"><summary><span class="order">02</span><span class="ex-main"><strong>Cable Lateral Raises</strong><span class="details">Side delts<span class="mid-dot">·</span><span class="sets">3 × 12–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Cable Lateral Raises"><source src="./Cable Lateral Raises.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><div class="exercise no-video"><span class="order">03</span><span class="ex-main"><strong>Preacher Curl Machine</strong><span class="details">Biceps<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><details class="exercise has-video"><summary><span class="order">04</span><span class="ex-main"><strong>Hammer Curl</strong><span class="details">Biceps + forearms<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Hammer Curl"><source src="./ssstik.io_@1saaclifts_1791314725300.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">05</span><span class="ex-main"><strong>Cable Triceps Pushdown</strong><span class="details">Triceps<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Cable Triceps Pushdown"><source src="./Cable Triceps Pushdown.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">06</span><span class="ex-main"><strong>Overhead Cable Triceps Extension</strong><span class="details">Long head triceps<span class="mid-dot">·</span><span class="sets">2 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Overhead Cable Triceps Extension"><source src="./Overhead Cable Triceps Extension.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details></div></section>
+<section class="day-panel" id="tue" aria-labelledby="heading-tue"><div class="split-heading"><div><span class="eyebrow">Tisdag · 5 övningar</span><h2 id="heading-tue">Legs + Core</h2><p>Quads · Hamstrings · Vader · Mage</p></div><span class="split-icon" aria-hidden="true">🦵</span></div><div class="exercise-list"><div class="exercise no-video"><span class="order">01</span><span class="ex-main"><strong>Leg Press</strong><span class="details">Quads + glutes<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><div class="exercise no-video"><span class="order">02</span><span class="ex-main"><strong>Leg Curl</strong><span class="details">Hamstrings<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><details class="exercise has-video"><summary><span class="order">03</span><span class="ex-main"><strong>Leg Extension</strong><span class="details">Quads<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Leg Extension"><source src="./Leg Extension.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">04</span><span class="ex-main"><strong>Calf Raise</strong><span class="details">Calves<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Calf Raise"><source src="./Calf Raise.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><div class="exercise no-video"><span class="order">05</span><span class="ex-main"><strong>Cable Crunch</strong><span class="details">Abs<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div></div></section>
+<section class="day-panel" id="wed" aria-labelledby="heading-wed"><div class="split-heading"><div><span class="eyebrow">Onsdag · 5 övningar</span><h2 id="heading-wed">Back + Lats</h2><p>Övre rygg · Traps · Rear delts</p></div><span class="split-icon" aria-hidden="true">🏋️</span></div><div class="exercise-list"><details class="exercise has-video"><summary><span class="order">01</span><span class="ex-main"><strong>Lat Pulldown</strong><span class="details">Lats<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Lat Pulldown"><source src="./Lat Pulldown.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">02</span><span class="ex-main"><strong>One-Arm Cable Row</strong><span class="details">Lats + mid-back<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för One-Arm Cable Row"><source src="./One-Arm Cable Row.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><div class="exercise no-video"><span class="order">03</span><span class="ex-main"><strong>Chest Supported Row-maskin</strong><span class="details">Upper back<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><details class="exercise has-video"><summary><span class="order">04</span><span class="ex-main"><strong>Reverse Pec Deck</strong><span class="details">Rear delts<span class="mid-dot">·</span><span class="sets">2 × 12–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Reverse Pec Deck"><source src="./Reverse Pec Deck.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">05</span><span class="ex-main"><strong>Dumbbell Shrugs</strong><span class="details">Traps<span class="mid-dot">·</span><span class="sets">2 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Dumbbell Shrugs"><source src="./Dumbbell Shrugs.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details></div></section>
+<section class="day-panel" id="thu" aria-labelledby="heading-thu"><div class="split-heading"><div><span class="eyebrow">Torsdag · 5 övningar</span><h2 id="heading-thu">Chest + Shoulders</h2><p>Övre bröst · Bröst · Side delts</p></div><span class="split-icon" aria-hidden="true">⚡</span></div><div class="exercise-list"><div class="exercise no-video"><span class="order">01</span><span class="ex-main"><strong>Incline Dumbbell Press</strong><span class="details">Upper chest<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="unavailable" title="Ingen video sparad">Ingen video</span></div><details class="exercise has-video"><summary><span class="order">02</span><span class="ex-main"><strong>Chest Press-maskin</strong><span class="details">Middle chest<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Chest Press-maskin"><source src="./chest press maskin.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">03</span><span class="ex-main"><strong>Pec Deck / Machine Fly</strong><span class="details">Middle / whole chest<span class="mid-dot">·</span><span class="sets">3 × 10–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Pec Deck / Machine Fly"><source src="./pec deck.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">04</span><span class="ex-main"><strong>Cable Lateral Raises</strong><span class="details">Side delts<span class="mid-dot">·</span><span class="sets">3 × 12–15</span><span class="mid-dot">·</span><span class="rest">60–90 sek vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Cable Lateral Raises"><source src="./Cable Lateral Raises.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details><details class="exercise has-video"><summary><span class="order">05</span><span class="ex-main"><strong>Shoulder Press-maskin</strong><span class="details">Front delts<span class="mid-dot">·</span><span class="sets">3 × 8–12</span><span class="mid-dot">·</span><span class="rest">2 min vila</span></span></span><span class="end-mark" aria-hidden="true">▶</span></summary><div class="clip"><video controls playsinline preload="none" aria-label="Video för Shoulder Press-maskin"><source src="./ssstik.io_1791313489374.mp4" type="video/mp4">Din webbläsare stöder inte videouppspelning.</video><p class="video-hint">Sparad offline när nedladdningen ovan är klar.</p></div></details></div></section>
+
+<p class="footer-note">Tryck på en övning för att se videon. Övningar märkta ”Ingen video” saknar klipp på GitHub. Vikter och repetitioner registrerar du som vanligt i Google Sheets. Ladda ner offline i den iPhone-app där du ska använda videorna.</p>
+</main>
+<script>
+"use strict";
+// All original pages and MP4s stay cached under the existing service-worker cache name.
+const FILES = ["index.html", "cable-lateral-raises.html", "cable-triceps-pushdown.html", "calf-raise.html", "chest-press-maskin-or-db-bench-press.html", "chest-press-maskin.html", "dumbbell-bench-press.html", "dumbbell-shrugs.html", "hammer-curl.html", "incline-dumbbell-press.html", "lat-pulldown.html", "leg-extension.html", "one-arm-cable-row.html", "overhead-cable-triceps-extension.html", "pec-deck.html", "reverse-pec-deck.html", "seated-incline-db-curl.html", "Cable Lateral Raises.mp4", "Cable Triceps Pushdown.mp4", "Calf Raise.mp4", "Dumbbell Bench Press.mp4", "Dumbbell Shrugs.mp4", "Lat Pulldown.mp4", "Leg Extension.mp4", "One-Arm Cable Row.mp4", "Overhead Cable Triceps Extension.mp4", "Reverse Pec Deck.mp4", "chest press maskin.mp4", "chest press maskin_or_db bench press.mp4", "pec deck.mp4", "seated incline db curl.mp4", "ssstik.io_1791313489374.mp4", "ssstik.io_@1saaclifts_1791314725300.mp4", "offline.html", "sw.js", "manifest.webmanifest"];
+const CACHE = "gym-offline-v1";
+const tabs = Array.from(document.querySelectorAll(".day-tab"));
+const panels = Array.from(document.querySelectorAll(".day-panel"));
+function activate(id){
+  tabs.forEach(t => t.setAttribute("aria-pressed",String(t.dataset.target === id)));
+  panels.forEach(p => { p.hidden = p.id !== id; });
+  document.querySelectorAll(".exercise.has-video[open]").forEach(d=>{d.open=false;});
+  if (history.replaceState) history.replaceState(null,"", "#"+id);
+}
+const weekday = new Date().getDay();
+const today = ({1:"mon",2:"tue",3:"wed",4:"thu"})[weekday] || "mon";
+const fromHash = location.hash.slice(1);
+activate(panels.some(p=>p.id===fromHash)?fromHash:today);
+tabs.forEach(t=>t.addEventListener("click",()=>activate(t.dataset.target)));
+// Keep at most one player open. No video preloading until the exercise is opened.
+const exercises=Array.from(document.querySelectorAll("details.has-video"));
+exercises.forEach(d => d.addEventListener("toggle", () => {
+  const vid = d.querySelector("video");
+  if (!d.open) { if (vid) vid.pause(); return; }
+  exercises.forEach(other=> {if(other !== d && other.open) other.open=false;});
+}));
+const btn=document.getElementById("save");
+const bar=document.getElementById("progress");
+const status=document.getElementById("status");
+const panel=document.getElementById("offline-panel");
+function assetUrl(name){return new URL(name,location.href).href;}
+async function countCached(){
+  const c=await caches.open(CACHE);let n=0;
+  for(const name of FILES) if(await c.match(assetUrl(name),{ignoreVary:true})) n++;
+  return n;
+}
+function updateStatus(n){
+  panel.dataset.ready=String(n===FILES.length);
+  status.textContent=n===FILES.length
+    ? "✓ Alla 36 filer är sparade. Fungerar utan internet."
+    : `${n} av ${FILES.length} filer sparade. Anslut till Wi-Fi för nedladdning.`;
+  btn.textContent=n===FILES.length?"Uppdatera":"Ladda ner allt";
+}
+async function initOffline(){
+  if (!("serviceWorker" in navigator) || !("caches" in window)){
+    status.textContent="Offlinefunktionen stöds inte i den här webbläsaren. Använd Safari på iPhone.";btn.disabled=true;return;
+  }
+  try{
+    await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.ready;
+    updateStatus(await countCached());
+  }catch(e){status.textContent="Offlinefel: "+e.message;btn.disabled=true;}
+}
+btn.addEventListener("click",async()=>{
+  btn.disabled=true;bar.hidden=false;bar.value=0;
+  let current=0;
+  try{
+    await navigator.serviceWorker.ready;
+    const cache=await caches.open(CACHE);
+    const fullUpdate=await countCached()===FILES.length;
+    for(const name of FILES){
+      const url=assetUrl(name);
+      const existing=await cache.match(url,{ignoreVary:true});
+      if(!fullUpdate && existing && name!=="offline.html"){
+        current++;bar.value=current;continue;
+      }
+      status.textContent=`Sparar ${current+1}/${FILES.length}: ${name}`;
+      const response=await fetch(new Request(url,{cache:"reload"}));
+      if(!response.ok || response.status!==200) throw Error(name+" (HTTP "+response.status+")");
+      await cache.put(url,response);
+      current++;bar.value=current;
+    }
+    updateStatus(await countCached());
+  }catch(e){
+    const n=await countCached();
+    updateStatus(n);
+    status.textContent=`Avbrutet: ${e.message}. ${n}/${FILES.length} sparade. Försök igen via Wi-Fi.`;
+  }finally{btn.disabled=false;}
+});
+initOffline();
+</script>
+</body>
+</html>
